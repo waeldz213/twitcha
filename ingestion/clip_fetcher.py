@@ -21,7 +21,7 @@ log = structlog.get_logger(__name__)
 
 HELIX_BASE = "https://api.twitch.tv/helix"
 TOKEN_URL = "https://id.twitch.tv/oauth2/token"
-POLL_INTERVAL_SECONDS = 120
+POLL_INTERVAL_SECONDS = 120  # seconds between Twitch API clip polls
 MIN_VIEW_COUNT = 5  # ignore low-quality clips
 
 

@@ -1,13 +1,13 @@
 import React from "react";
 import { Composition } from "remotion";
-import { ClipTemplate, ClipTemplateProps } from "./ClipTemplate";
+import { ClipTemplate, ClipTemplateProps, CLIP_FPS } from "./ClipTemplate";
 
 const DEFAULT_PROPS: ClipTemplateProps = {
   videoSrc: "",
   words: [],
   title: "Epic Moment",
   channelName: "@streamer",
-  durationInFrames: 1800, // 60 s × 30 fps
+  durationInFrames: 60 * CLIP_FPS, // 60 s
 };
 
 export const Root: React.FC = () => (
@@ -15,7 +15,7 @@ export const Root: React.FC = () => (
     id="ClipTemplate"
     component={ClipTemplate}
     durationInFrames={DEFAULT_PROPS.durationInFrames}
-    fps={30}
+    fps={CLIP_FPS}
     width={1080}
     height={1920}
     defaultProps={DEFAULT_PROPS}

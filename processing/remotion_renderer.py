@@ -46,7 +46,8 @@ def render_clip(
         return out_path
 
     words: List[Dict[str, Any]] = transcript.get("words", [])
-    duration_seconds: float = words[-1]["end"] if words else settings.clip_max_duration
+    last_end: float = words[-1]["end"] if len(words) > 0 else 0.0
+    duration_seconds: float = last_end if last_end > 0 else float(settings.clip_max_duration)
     duration_frames = max(1, int(duration_seconds * 30) + 30)
 
     props: Dict[str, Any] = {

@@ -28,6 +28,7 @@ FONT_COLOR = "white"
 STROKE_COLOR = "black"
 STROKE_WIDTH = 2
 WORDS_PER_LINE = 4
+SUBTITLE_WRAP_WIDTH = 20  # characters per line for text wrapping
 
 
 # ── Audio normalization ───────────────────────────────────────────────────────
@@ -149,7 +150,7 @@ def burn_subtitles(
 
         txt_clip = (
             TextClip(
-                textwrap.fill(line["text"], 20),
+                textwrap.fill(line["text"], SUBTITLE_WRAP_WIDTH),
                 fontsize=FONT_SIZE,
                 color=FONT_COLOR,
                 stroke_color=STROKE_COLOR,

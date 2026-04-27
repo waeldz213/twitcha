@@ -23,6 +23,11 @@ from publisher.browser_utils import (
 log = structlog.get_logger(__name__)
 
 YOUTUBE_UPLOAD_URL = "https://studio.youtube.com"
+YOUTUBE_TITLE_MAX_LENGTH = 100
+YOUTUBE_DESCRIPTION_MAX_LENGTH = 500
+
+# Hostname used to detect the Google login redirect
+_GOOGLE_LOGIN_HOST = "accounts.google.com"
 
 
 async def upload_to_youtube(
@@ -56,7 +61,10 @@ async def upload_to_youtube(
             await page.goto(YOUTUBE_UPLOAD_URL, wait_until="networkidle", timeout=30_000)
             await human_delay(2, 4)
 
-            if "accounts.google.com" in page.url:
+            # Detect Google login redirect by parsing the URL hostname
+            from urllib.parse import urlparse
+            parsed = urlparse(page.url)
+            if parsed.hostname == _GOOGLE_LOGIN_HOST:
                 log.error("youtube.not_logged_in", account=account)
                 return False
 
@@ -85,14 +93,14 @@ async def upload_to_youtube(
             await page.wait_for_selector(title_sel, timeout=20_000)
             await page.triple_click(title_sel)
             await page.keyboard.press("Control+a")
-            for char in title[:100]:
+            for char in title[:YOUTUBE_TITLE_MAX_LENGTH]:
                 await page.keyboard.type(char, delay=random.uniform(30, 80))
             await human_delay(0.5, 1.5)
 
             # Fill description
             desc_sel = '#description-textarea div[contenteditable="true"]'
             await page.click(desc_sel)
-            for char in full_description[:500]:
+            for char in full_description[:YOUTUBE_DESCRIPTION_MAX_LENGTH]:
                 await page.keyboard.type(char, delay=random.uniform(20, 60))
             await human_delay(0.5, 1.5)
 

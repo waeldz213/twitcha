@@ -24,7 +24,7 @@ import {
   Video,
 } from "remotion";
 
-// ── Types ────────────────────────────────────────────────────────────────────
+CLIP_FPS = 30  # frames per second for all compositions
 
 export interface WordTimestamp {
   word: string;
@@ -54,8 +54,8 @@ function groupWords(
     const chunk = words.slice(i, i + WORDS_PER_GROUP);
     groups.push({
       text: chunk.map((w) => w.word).join(" "),
-      startFrame: Math.round(chunk[0].start * 30),
-      endFrame: Math.round(chunk[chunk.length - 1].end * 30) + 5,
+      startFrame: Math.round(chunk[0].start * CLIP_FPS),
+      endFrame: Math.round(chunk[chunk.length - 1].end * CLIP_FPS) + 5,
     });
   }
   return groups;
