@@ -1,0 +1,61 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  worker:
+    build: .
+    command: celery -A orchestration.celery_app worker --loglevel=info --concurrency=${CELERY_CONCURRENCY:-2}
+    env_file: .env
+    depends_on:
+      - redis
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+
+  beat:
+    build: .
+    command: celery -A orchestration.celery_app beat --loglevel=info
+    env_file: .env
+    depends_on:
+      - redis
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+
+  bot:
+    build: .
+    command: python -m ingestion.twitch_bot
+    env_file: .env
+    depends_on:
+      - redis
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+
+  kick_monitor:
+    build: .
+    command: python -m ingestion.kick_monitor
+    env_file: .env
+    depends_on:
+      - redis
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+
+  metrics:
+    build: .
+    command: python -m monitoring.server
+    env_file: .env
+    ports:
+      - "${PROMETHEUS_PORT:-8000}:8000"
+    restart: unless-stopped
+
+volumes:
+  redis_data:
