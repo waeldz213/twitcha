@@ -1,0 +1,39 @@
+# ─── Core ────────────────────────────────────────────────────────────────────
+python-dotenv==1.0.1
+pydantic==2.7.1
+pydantic-settings==2.2.1
+structlog==24.1.0
+
+# ─── Ingestion ───────────────────────────────────────────────────────────────
+twitchio==2.10.0
+websockets==12.0
+httpx==0.27.0
+yt-dlp==2026.02.21
+streamlink==6.8.2
+
+# ─── Processing ──────────────────────────────────────────────────────────────
+openai-whisper==20231117
+moviepy==1.0.3
+opencv-python-headless==4.9.0.80
+mediapipe==0.10.14
+scenedetect==0.6.4
+ffmpeg-python==0.2.0
+Pillow==12.2.0
+numpy==1.26.4
+
+# ─── AI Enrichment ───────────────────────────────────────────────────────────
+openai==1.30.1
+anthropic==0.26.0
+assemblyai==0.29.0
+
+# ─── Orchestration ───────────────────────────────────────────────────────────
+celery==5.4.0
+redis==5.0.4
+kombu==5.3.5
+
+# ─── Publisher ───────────────────────────────────────────────────────────────
+playwright==1.44.0
+fake-useragent==1.5.1
+
+# ─── Monitoring ──────────────────────────────────────────────────────────────
+prometheus-client==0.20.0
